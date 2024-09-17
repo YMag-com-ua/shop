@@ -18,7 +18,12 @@ use Air\Form\Element\Text;
 use Air\Form\Element\Tiny;
 use Air\Form\Form;
 use Air\Form\Generator;
+use Air\Model\Exception\CallUndefinedMethod;
+use Air\Model\Exception\ConfigWasNotProvided;
+use Air\Model\Exception\DriverClassDoesNotExists;
+use Air\Model\Exception\DriverClassDoesNotExtendsFromDriverAbstract;
 use Air\Model\Meta\Exception\PropertyWasNotFound;
+use Air\Model\ModelAbstract;
 use Exception;
 
 /**
@@ -104,7 +109,7 @@ class Product extends Multiple
         new Text('vendorCode', ['label' => 'Код постачальника']),
         new Text('barcode', ['label' => 'Штрих-код']),
         new Text('price', ['label' => 'Ціна']),
-        new Text('oldPrice', ['label' => 'Стара ціна']),
+        new Text('oldPrice', ['label' => 'Стара ціна', 'allowNull' => true]),
         new Text('quantity', ['label' => 'Кількість', 'allowNull' => true]),
         new Select('availability', [
           'label' => 'Доступність',
@@ -168,5 +173,20 @@ class Product extends Multiple
         ]),
       ]
     ]);
+  }
+
+  /**
+   * @param \App\Model\Product $model
+   * @param array $formData
+   * @return void
+   * @throws ClassWasNotFound
+   * @throws CallUndefinedMethod
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  protected function didSaved(ModelAbstract $model, array $formData): void
+  {
+    $model->updateSearchIndex();
   }
 }

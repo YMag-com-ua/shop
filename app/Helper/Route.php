@@ -217,6 +217,7 @@ class Route
 
   /**
    * @param Category|null $category
+   * @param string|null $search
    * @param array $brands
    * @param array $filters
    * @param array $countries
@@ -233,6 +234,7 @@ class Route
    */
   public static function catalog(
     ?Category $category = null,
+    ?string   $search = null,
     array     $brands = [],
     array     $filters = [],
     array     $countries = [],
@@ -244,6 +246,10 @@ class Route
     $parts = [];
     if ($category) {
       $parts['category'] = $category->url;
+    }
+
+    if ($search) {
+      $parts['search'] = $search;
     }
 
     if (count($filters)) {

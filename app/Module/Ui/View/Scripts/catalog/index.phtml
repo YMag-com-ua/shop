@@ -13,6 +13,9 @@ $filters = $this->category?->filters ?? $this->catalogSettings?->filters ?? [];
 /** @var Product[] $products */
 $products = $this->products;
 
+/** @var string $search */
+$search = $this->search;
+
 echo Cache::quick([Route::currentRouteId(), 'catalog', 'heading'], function () {
   echo container(class: 'my-14', content: $this->partial('catalog/partial/breadcrumbs'));
   echo container(class: 'mb-14', content: $this->partial('catalog/partial/banners'));
@@ -24,7 +27,11 @@ echo container(
     data: 'catalog-form',
     content: row([
       col(class: 'col-12 col-lg-3 col-md-4 mb-md-30 mb-0', content: $this->partial('catalog/partial/aside')),
-      col(class: 'col-lg-9 col-md-8', content: function () use ($products) {
+      col(class: 'col-lg-9 col-md-8', content: function () use ($products, $search) {
+
+        if ($search) {
+          echo hidden('search', $search);
+        }
 
         echo $this->partial('catalog/partial/sorting');
         echo $this->partial('catalog/partial/selected-filters');

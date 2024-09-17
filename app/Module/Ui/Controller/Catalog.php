@@ -16,11 +16,27 @@ use App\Model\Country;
 use App\Model\Filter;
 use App\Model\Product;
 use Exception;
+use MongoDB\BSON\Regex;
 
 class Catalog extends Base
 {
   /**
+   * @var array
+   */
+  private array $sortingOptions = [
+    'popular' => ['popularity' => -1],
+    'price-asc' => ['price' => 1],
+    'price-desc' => ['price' => -1],
+  ];
+
+  /**
+   * @var int[]
+   */
+  private array $showOptions = [40, 80, 120];
+
+  /**
    * @param Category|null $category
+   * @param string|null $search
    * @param array|null $filters
    * @param array|null $brands
    * @param array|null $countries
@@ -41,6 +57,7 @@ class Catalog extends Base
    */
   public function index(
     ?Category $category = null,
+    ?string   $search = null,
     ?array    $filters = [],
     ?array    $brands = [],
     ?array    $countries = [],
@@ -53,16 +70,8 @@ class Catalog extends Base
     ?int      $priceMax = null
   ): void
   {
-    $sortingOptions = [
-      'popular' => ['popularity' => -1],
-      'price-asc' => ['price' => 1],
-      'price-desc' => ['price' => -1],
-    ];
-
-    $showOptions = [40, 80, 120];
-
-    if (!in_array($show, $showOptions)) {
-      $show = $showOptions[0];
+    if (!in_array($show, $this->showOptions)) {
+      $show = $this->showOptions[0];
     }
 
     if ($category) {
@@ -78,6 +87,11 @@ class Catalog extends Base
       $this->getView()->setMeta($catalogSettings->meta);
       $this->getView()->assign('catalogSettings', $catalogSettings);
       $cond = [];
+    }
+
+    if ($search) {
+      $search = trim(strip_tags($search));
+      $cond['search'] = new Regex($search, 'i');
     }
 
     if ($new) {
@@ -100,7 +114,6 @@ class Catalog extends Base
     } elseif ($max = intval($priceMax)) {
       $cond['price'] = ['$lte' => $max];
     }
-
 
     $selectedFilters = [];
     foreach (($filters ?? []) as $url => $values) {
@@ -149,13 +162,15 @@ class Catalog extends Base
     $this->getView()->assign('new', $new);
     $this->getView()->assign('sale', $sale);
 
+    $this->getView()->assign('search', $search);
+
     $this->getView()->assign('priceMin', $priceMin);
     $this->getView()->assign('priceMax', $priceMax);
 
     $this->getView()->assign('count', Product::quantity($cond));
     $this->getView()->assign('products', Product::all(
       $cond,
-      $sortingOptions[$sort] ?? $sortingOptions['popular'],
+      $this->sortingOptions[$sort] ?? $this->sortingOptions['popular'],
       $show, (($page ?? 1) - 1) * $show)
     );
   }

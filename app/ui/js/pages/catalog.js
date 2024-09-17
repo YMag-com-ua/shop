@@ -22,6 +22,14 @@ wait.on('[data-swiper-catalog-banner]', (el) => {
   });
 });
 
+$(document).on('submit', '[data-form-search]', function () {
+  const search = $(this).find('[name=search]').val().trim();
+  if (search.length > 2) {
+    nav.go($(this).attr('action') + '?' + $(this).serialize());
+  }
+  return false;
+});
+
 $(document).on('click', '[data-catalog-sort]', function () {
   $('[name="sort"]').val($(this).data('catalog-sort'));
   $('[data-catalog-form]').submit();

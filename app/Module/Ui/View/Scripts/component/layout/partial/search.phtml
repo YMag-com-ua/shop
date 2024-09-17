@@ -4,8 +4,17 @@
 
 use Air\Crud\Model\Phrase;
 use Air\View\View;
+use App\Helper\Route;
 
-echo form(class: 'h-44 p-r w-f search', content: [
-  text(class: 'h-f p-10 bw-2 bc-primary br-5 w-f', placeholder: Phrase::t('Пошук...')),
-  div(class: 'p-a r-0 t-0 h-f d-f ai-c jc-c w-44 c-primary', content: faIcon(icon: 'magnifying-glass'))
-]);
+/** @var string $search */
+$search = $this->search;
+
+echo form(
+  class: 'h-44 p-r w-f search',
+  data: 'form-search',
+  action: Route::catalog(),
+  content: [
+    text(class: 'h-f p-10 bw-2 bc-primary br-5 w-f', placeholder: Phrase::t('Пошук...'), name: 'search', value: $search),
+    div(class: 'p-a r-0 t-0 h-f d-f ai-c jc-c w-44 c-primary', content: faIcon(icon: 'magnifying-glass'))
+  ]
+);

@@ -59,6 +59,8 @@ use Air\Type\RichContent;
  * @property boolean $enabled
  * @property Language $language
  *
+ * @property string $search
+ *
  * @property array $yug
  * @property integer $yugId
  * @property integer $yugCategoryId
@@ -128,6 +130,42 @@ class Product extends ModelAbstract
   public function addPopularity(int $term = 1): void
   {
     $this->popularity = $this->popularity + $term;
+    $this->save();
+  }
+
+  /**
+   * @return void
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public function updateSearchIndex(): void
+  {
+    $search = [
+      $this->url,
+      $this->title,
+      $this->description,
+      $this->content,
+      $this->vendorCode,
+      $this->barcode,
+      $this->category->title
+    ];
+
+    foreach (($this->richContent ?? []) as $item) {
+      if ($item->getType() === RichContent::TYPE_HTML || $item->getType() === RichContent::TYPE_TEXT) {
+        $search[] = trim(strip_tags($item->getValue()));
+      }
+    }
+
+    foreach ($this->categories as $category) {
+      $search[] = $category->title;
+    }
+
+    $search = array_filter($search);
+
+    $this->search = implode('::', $search);
     $this->save();
   }
 }
