@@ -34,6 +34,10 @@ use App\Type\Banner;
  * @property Banner[] $banners
  *
  * @property Language $language
+ *
+ * @property array $yug
+ * @property integer $yugId
+ * @property integer $yugParentId
  */
 class Category extends ModelAbstract
 {

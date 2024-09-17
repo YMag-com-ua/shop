@@ -11,8 +11,7 @@ $languages = Language::all();
 
 echo flex(class: 'f-c h-f', content: [
   a(href: Route::home(), class: 'mb-10', content: [
-    img(src: 'images/logo-dark.png', class: 'h-26 h-md-40 only-light'),
-    img(src: 'images/logo-light.png', class: 'h-26 h-md-40 only-dark')
+    img(src: 'images/logo-light.png', class: 'h-26 h-md-40'),
   ]),
   div(
     class: 'flex-g-1',
@@ -22,10 +21,10 @@ echo flex(class: 'f-c h-f', content: [
         [
           div(class: 'mobile-menu', content: [
             $this->partialCached('component/layout/partial/menu'),
-            a(data: ['badge' => 23], content: [
-              faIcon(icon: 'heart', class: 'icon'),
-              Phrase::t('Вибране')
-            ])
+//            a(data: ['badge' => 23], content: [
+//              faIcon(icon: 'heart', class: 'icon'),
+//              Phrase::t('Вибране')
+//            ])
           ]),
           a(href: Route::catalog(), class: 'd-f mt-20 ai-c', data: ['force' => true, 'mobile-category-btn'], content: [
             $this->partial('component/layout/partial/catalog-logo'),

@@ -18,6 +18,9 @@ use Air\Model\ModelAbstract;
  * @property array $values
  *
  * @property Language $language
+ *
+ * @property array $yug
+ * @property integer $yugId
  */
 class Filter extends ModelAbstract
 {

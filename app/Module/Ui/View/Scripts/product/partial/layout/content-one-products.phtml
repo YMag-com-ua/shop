@@ -14,7 +14,7 @@ if (count($product->alsoBuyProducts)) {
   $products = $product->alsoBuyProducts;
 } else {
   $title = Phrase::t('Рекомендовані товари');
-  $product->recommendedProducts;
+  $products = $product->recommendedProducts;
 }
 
 echo container(

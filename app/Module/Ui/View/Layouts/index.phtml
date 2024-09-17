@@ -22,7 +22,7 @@ $fontsUi = Front::getInstance()->getConfig()['air']['fontsUi'] ?? false;
 
 echo document(
   htmlAttributes: ['lang' => $language->key],
-  htmlData: ['lang-prefix' => Route::getLanguageUrlPrefix()],
+  htmlData: ['lang-prefix' => Route::getLanguageUrlPrefix(), 'bs-theme' => 'dark'],
   headContent: function () use ($isCodesEnabled, $language, $fontsUi) {
     if ($isCodesEnabled) {
       echo implode('', Map::execute(Codes::all(), 'description'));

@@ -4,12 +4,12 @@ return [
   'env' => 'live',
   'air' => [
     'modules' => '\\App\\Module',
-    'exception' => false,
+    'exception' => true,
     'phpIni' => [
-      'display_errors' => '0',
+      'display_errors' => '1',
     ],
     'startup' => [
-      'error_reporting' => 0,
+      'error_reporting' => E_ALL,
       'date_default_timezone_set' => 'Europe/Kyiv',
     ],
     'loader' => [
@@ -36,7 +36,7 @@ return [
     ],
     'fontsUi' => 'fontsUi',
     'admin' => [
-      'title' => 'AirShop',
+      'title' => 'YMag',
       'logo' => '/assets/ui/images/favicon.png',
       'favicon' => '/assets/ui/images/favicon.png',
       'manage' => '_admin',
@@ -73,6 +73,13 @@ return [
     'admin.*' => [
       'module' => 'admin',
       'air' => [
+        'exception' => true,
+        'phpIni' => [
+          'display_errors' => '1',
+        ],
+        'startup' => [
+          'error_reporting' => E_ALL,
+        ],
         'asset' => [
           'underscore' => false,
           'prefix' => '/assets/air',
@@ -95,4 +102,8 @@ return [
       ]
     ],
   ],
+  'yug' => [
+    'userKey' => 'a5e7d38e-1e0e-4ef0-b67c-d6f0591689d7',
+    'secret' => '8bda97899a88927103c45ea60ac2e9dd'
+  ]
 ];

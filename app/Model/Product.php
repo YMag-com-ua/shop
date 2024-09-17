@@ -58,6 +58,13 @@ use Air\Type\RichContent;
  * @property string $url
  * @property boolean $enabled
  * @property Language $language
+ *
+ * @property array $yug
+ * @property integer $yugId
+ * @property integer $yugCategoryId
+ * @property integer $yugPriceInitial
+ * @property integer $yugPriceRrp
+ * @property string $yugSyncId
  */
 class Product extends ModelAbstract
 {

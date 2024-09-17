@@ -49,11 +49,11 @@ class Product extends Multiple
   {
     $header = parent::getHeader();
     $header['price'] = [
-      'title' => 'Price',
+      'title' => 'Ціна',
       'source' => function (\App\Model\Product $product) {
         return self::multiple([
           self::badge($product->price . ' грн', self::INFO),
-          self::badge($product->oldPrice . ' грн'),
+          self::badge($product->yugPriceInitial . ' грн'),
         ]);
       }
     ];
