@@ -22,7 +22,8 @@ echo footer(
           class: 'gp-20 f-c',
           content: [
             a(href: Route::home(), class: 'mb-10', content: [
-              img(src: 'images/logo-light.png', class: 'h-26 h-md-40'),
+              img(src: 'images/logo-dark.png', class: 'h-26 h-md-40 only-light'),
+              img(src: 'images/logo-light.png', class: 'h-26 h-md-40 only-dark')
             ]),
             div(class: 'o-80', content: $general->title),
             div(class: 'o-80', content: $general->address),
@@ -30,13 +31,17 @@ echo footer(
               a(
                 class: 'fs-30 c-primary',
                 href: Route::tel($general->phones['0']),
-                data: ['title' => Phrase::t('Подзвонити нам')],
+                data: ['title' => Phrase::t('Подзвонити нам'), 'force' => true],
                 content: faIcon(icon: 'phone-volume', style: FaIcon::STYLE_DUOTONE)
               ),
               flex(class: 'f-c sticky-hide', content: [
                 a(class: 'r', content: Phrase::t('Написати нам')),
-                a(class: 'r fw-6 fs-16 ls-m08', href: Route::tel($general->phones[0]), content: $general->phones[0]),
-
+                a(
+                  class: 'r fw-6 fs-16 ls-m08',
+                  href: Route::tel($general->phones[0]),
+                  content: $general->phones[0],
+                  data: ['force' => true]
+                ),
               ])
             ]),
             $this->partialCached('component/layout/partial/socials'),
@@ -59,10 +64,10 @@ echo footer(
       col(class: 'col-12 col-sm-6 col-lg-3', content: [
         div(class: 'fs-16 fw-bold px-10', content: Phrase::t('Куточок покупця')),
         flex(class: 'f-c gp-10 mt-10 sticky-menu', content: [
-          a(class: 'fw-6', content: [faIcon('badge-check'), Phrase::t('Гарантія')]),
-          a(class: 'fw-6', content: [faIcon('scale-balanced'), Phrase::t('Правила користування сайтом')]),
-          a(class: 'fw-6', content: [faIcon('arrows-rotate'), Phrase::t('Обмін і повернення товару')]),
-          a(class: 'fw-6', content: [faIcon('shield-check'), Phrase::t('Політика конфіденційності')]),
+          a(href: Route::legalWarranty(), class: 'fw-6', content: [faIcon('badge-check'), Phrase::t('Гарантія')]),
+          a(href: Route::legalRules(), class: 'fw-6', content: [faIcon('scale-balanced'), Phrase::t('Правила користування сайтом')]),
+          a(href: Route::legalRefund(), class: 'fw-6', content: [faIcon('arrows-rotate'), Phrase::t('Обмін і повернення товару')]),
+          a(href: Route::legalPrivacyPolicy(), class: 'fw-6', content: [faIcon('shield-check'), Phrase::t('Політика конфіденційності')]),
         ])
       ]),
     ])

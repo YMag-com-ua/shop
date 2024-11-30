@@ -38,7 +38,12 @@ echo container(
                 Phrase::t('Або зателефонуйте під одному з цих телефонів')
               ]);
               foreach ($contact->phones as $phone) {
-                echo a(href: Route::tel($phone), content: $phone, class: 'fs-16 r o-80 td-u');
+                echo a(
+                  data: ['force' => true],
+                  href: Route::tel($phone),
+                  content: $phone,
+                  class: 'fs-16 r o-80 td-u'
+                );
               }
             }),
             flex(class: 'gp-10 f-c', content: [

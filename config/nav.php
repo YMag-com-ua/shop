@@ -10,6 +10,16 @@ return [
         'icon' => 'cogs',
         'url' => ['controller' => 'general']
       ],
+      [
+        'title' => 'Налаштування',
+        'icon' => 'cogs',
+        'url' => ['controller' => 'settings']
+      ],
+      [
+        'title' => 'Шаблони Email',
+        'icon' => 'envelope',
+        'url' => ['controller' => 'mailTemplate']
+      ],
     ]
   ],
   [
@@ -91,11 +101,6 @@ return [
         ]
       ],
       [
-        'title' => 'Купони',
-        'icon' => 'receipt',
-        'url' => ['controller' => 'coupon']
-      ],
-      [
         'title' => 'Замовлення',
         'icon' => 'list',
         'url' => ['controller' => 'order']
@@ -104,6 +109,22 @@ return [
         'title' => 'Звернення користувачів',
         'icon' => 'user',
         'url' => ['controller' => 'userRequest']
+      ],
+    ]
+  ],
+  [
+    'title' => 'Знижки',
+    'icon' => 'tags',
+    'items' => [
+      [
+        'title' => 'Купони',
+        'icon' => 'receipt',
+        'url' => ['controller' => 'coupon']
+      ],
+      [
+        'title' => 'Знижка в залежності від суми',
+        'icon' => 'tag',
+        'url' => ['controller' => 'discountCartBySum']
       ],
     ]
   ],
@@ -151,6 +172,32 @@ return [
         'title' => 'Статті',
         'icon' => 'newspaper',
         'url' => ['controller' => 'article']
+      ],
+    ]
+  ],
+  [
+    'title' => 'Юридичні сторінки',
+    'icon' => 'scale-balanced',
+    'items' => [
+      [
+        'title' => 'Гарантія',
+        'icon' => 'book',
+        'url' => ['controller' => 'legalWarranty']
+      ],
+      [
+        'title' => 'Правила користування сайтом',
+        'icon' => 'book',
+        'url' => ['controller' => 'legalRules']
+      ],
+      [
+        'title' => 'Обмін і повернення товару',
+        'icon' => 'book',
+        'url' => ['controller' => 'legalRefund']
+      ],
+      [
+        'title' => 'Політика конфіденційності',
+        'icon' => 'book',
+        'url' => ['controller' => 'legalPrivacyPolicy']
       ],
     ]
   ]

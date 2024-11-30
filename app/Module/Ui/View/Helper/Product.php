@@ -4,9 +4,21 @@ declare(strict_types=1);
 
 namespace App\Module\Ui\View\Helper;
 
+use Air\Core\Exception\ClassWasNotFound;
+use Air\Core\Exception\DomainMustBeProvided;
 use Air\Crud\Model\Phrase;
+use Air\Model\Exception\CallUndefinedMethod;
+use Air\Model\Exception\ConfigWasNotProvided;
+use Air\Model\Exception\DriverClassDoesNotExists;
+use Air\Model\Exception\DriverClassDoesNotExtendsFromDriverAbstract;
+use Air\Model\Meta\Exception\CollectionCantBeWithoutPrimary;
+use Air\Model\Meta\Exception\CollectionCantBeWithoutProperties;
+use Air\Model\Meta\Exception\CollectionNameDoesNotExists;
+use Air\Model\Meta\Exception\PropertyIsSetIncorrectly;
 use Air\Type\FaIcon;
 use App\Helper\Route;
+use ReflectionException;
+use Throwable;
 
 class Product
 {
@@ -70,6 +82,48 @@ class Product
             a(href: Route::product($product), class: 'fw-bold lm-2', content: $product->title),
             a(Route::catalog($product->category), $product->category->title, 'c-secondary c-secondary-hover fw-bold lm-1'),
             $count ? self::priceWithCount($product, $count) : self::priceWithSale($product)
+          ])
+      ]);
+  }
+
+  /**
+   * @param \App\Model\Product $product
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws CollectionCantBeWithoutPrimary
+   * @throws CollectionCantBeWithoutProperties
+   * @throws CollectionNameDoesNotExists
+   * @throws PropertyIsSetIncorrectly
+   * @throws ReflectionException
+   * @throws Throwable
+   */
+  public static function compare(\App\Model\Product $product): string
+  {
+    return flex(
+      class: 'ai-s',
+      content: [
+        div(
+          class: 'p-r',
+          content: [
+            img($product->getImage(), class: 'ar-1-1 p-10 bg-white br-3 sd-soft of-con w-70 p-r of-h d-b'),
+            self::quickViewButton($product),
+            div(
+              class: 'p-a z-1 t-m10 l-0 br-circle sc-danger o-70 o-100-hover an-2 d-f ai-c jc-c w-26 h-26 cp',
+              data: ['compare-remove' => $product->url, 'title' => Phrase::t('Прибрати з порівняння')],
+              content: faIcon('xmark', FaIcon::STYLE_LIGHT, class: 'fs-12')
+            ),
+          ]),
+        flex(
+          class: 'px-12 f-c gt-10',
+          content: [
+            a(href: Route::product($product), class: 'fw-bold lm-2', content: $product->title),
+            a(Route::catalog($product->category), $product->category->title, 'c-secondary c-secondary-hover fw-bold lm-1'),
+            self::priceWithSale($product)
           ])
       ]);
   }

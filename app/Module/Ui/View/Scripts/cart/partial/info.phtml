@@ -1,16 +1,36 @@
 <?php
 
 use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
 use App\Helper\Cart;
 use App\Model\Coupon;
+use App\Model\DiscountCartBySum;
 use App\Module\Ui\View\Helper\Common;
 
 $price = Cart::price();
+$priceWithSale = Cart::priceWithSale();
+
 $coupon = Cart::getCoupon();
-$couponPrice = Cart::priceWithCoupon();
+
+$appliedDiscount = Cart::getAppliedDiscountCartBySum();
+$nearestDiscount = Cart::getNearestDiscountCartBySum();
+
+if ($nearestDiscount) {
+  echo flex(
+    class: 'ai-c gp-10 bg-primary p-20 br-10 mb-10 c-white',
+    content: [
+      faIcon(FaIcon::ICON_TAGS, FaIcon::STYLE_DUOTONE, class: 'fs-40'),
+      div(
+        class: 'fs-14',
+        content: str_replace('{sum}', span(class: 'fw-bold', content: $nearestDiscount->minSum - $price), $nearestDiscount->description)
+      )
+    ]
+  );
+
+  echo div(class: 'h-1 bg-level-3-bg');
+}
 
 if ($coupon && $coupon->type !== Coupon::TYPE_INFO) {
-
   echo row(class: 'fw-bold o-80 fs-14', content: [
     col(class: 'col-7', content: Phrase::t('Загальна сума:')),
     col(class: 'col-5 ta-r td-lt', content: Common::price($price)),
@@ -18,17 +38,28 @@ if ($coupon && $coupon->type !== Coupon::TYPE_INFO) {
 
   echo row(class: 'fw-bold o-80 fs-14', content: [
     col(class: 'col-7', content: Phrase::t('Знижка купона:')),
-    col(class: 'col-5 ta-r', content: Common::price($price - $couponPrice)),
-  ]);
-
-  echo row(class: 'fw-bold o-80 fs-14', content: [
-    col(class: 'col-7', content: Phrase::t('Сума до оплати:')),
-    col(class: 'col-5 ta-r', content: Common::price($couponPrice)),
-  ]);
-
-} else {
-  echo row(class: 'fw-bold fs-15', content: [
-    col(class: 'col-7', content: Phrase::t('Сума до оплати:')),
-    col(class: 'col-5 ta-r', content: Common::price($price)),
+    col(class: 'col-5 ta-r', content: function () use ($coupon) {
+      if ($coupon->type === Coupon::TYPE_PERCENTAGE) {
+        return $coupon->value . '%';
+      }
+      return Common::price($coupon->value);
+    }),
   ]);
 }
+
+if ($appliedDiscount) {
+  echo row(class: 'fw-bold o-80 fs-14', content: [
+    col(class: 'col-7', content: Phrase::t('Загальна знижка:')),
+    col(class: 'col-5 ta-r', content: function () use ($appliedDiscount) {
+      if ($appliedDiscount->type === DiscountCartBySum::TYPE_PERCENTAGE) {
+        return $appliedDiscount->value . '%';
+      }
+      return Common::price($appliedDiscount->value);
+    }),
+  ]);
+}
+
+echo row(class: 'fw-bold fs-14', content: [
+  col(class: 'col-7', content: Phrase::t('Сума до оплати:')),
+  col(class: 'col-5 ta-r', content: Common::price($priceWithSale)),
+]);

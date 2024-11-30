@@ -60,7 +60,7 @@ class Coupon extends Multiple
           ],
         ]),
         new Text('value', [
-          'label' => 'Value',
+          'label' => 'Значення',
           'allowNull' => true
         ])
       ],

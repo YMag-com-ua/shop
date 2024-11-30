@@ -1,0 +1,29 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use Air\View\View;
+use App\Helper\Route;
+use App\Service\User\Auth;
+
+/** @var View $this */
+
+$user = Auth::getUser();
+
+echo $this->partial('profile/partial/preview', [
+  'icon' => faIcon(icon: FaIcon::ICON_USER),
+  'title' => Phrase::t('Мої дані'),
+  'link' => ['title' => Phrase::t('Редагувати'), 'url' => Route::profileEdit()],
+  'inner' => row(
+    class: 'gt-10 fw-4',
+    content: function () use ($user) {
+      echo col(class: 'col-12 fw-6', content: $user->firstName);
+      echo col(class: 'col-12 fw-6', content: $user->secondName);
+      echo col(class: 'col-12 fw-6', content: $user->email);
+
+      if ($user->phone) {
+        echo col(class: 'col-12 fw-6', content: $user->phone);
+      }
+    }
+  ),
+]);

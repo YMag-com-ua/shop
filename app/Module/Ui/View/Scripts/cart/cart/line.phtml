@@ -1,0 +1,25 @@
+<?php
+
+use App\Module\Ui\View\Helper\Common;
+use App\Module\Ui\View\Helper\Product;
+use App\Type\CartItem;
+
+/** @var CartItem $item */
+$item = $this->item;
+
+echo div(
+  class: 'mb-20 mb-md-0 w-f w-md-a',
+  content: Product::small($item->getProduct())
+);
+
+echo div('w-f w-md-a',
+  flex('gp-20 w-f w-md-a jc-sb', [
+    div('w-a w-md-100 flex-s-0', [
+      div('fw-3 fs-12', Common::price($item->getProduct()->price)),
+      div('fw-bold', Common::price($item->getProduct()->price * $item->getCount())),
+    ]),
+    div('h-40 w-f w-md-140', $this->partial('cart/cart/count', [
+      'item' => $item
+    ]))
+  ])
+);

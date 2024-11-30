@@ -58,7 +58,7 @@ class Product extends Multiple
       'source' => function (\App\Model\Product $product) {
         return self::multiple([
           self::badge($product->price . ' грн', self::INFO),
-          self::badge($product->yugPriceInitial . ' грн'),
+          self::badge($product->oldPrice . ' грн'),
         ]);
       }
     ];

@@ -16,7 +16,7 @@ use Air\Model\Meta\Exception\PropertyWasNotFound;
 use App\Helper\Route;
 use App\Model\General;
 
-class Base extends Controller
+abstract class Base extends Controller
 {
   /**
    * @return void

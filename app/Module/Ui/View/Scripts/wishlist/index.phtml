@@ -1,0 +1,29 @@
+<?php
+
+use App\Model\Product;
+
+/** @var Product[] $products */
+$products = $this->products;
+
+echo container(
+  class: 'mb-50',
+  content: function () use ($products) {
+
+    echo $this->partial('wishlist/partial/breadcrumbs');
+
+    if (!count($products)) {
+      echo $this->partial('wishlist/partial/no-products');
+      return;
+    }
+
+    echo row(class: 'gt-10 gt-sm-20', content: function () use ($products) {
+      foreach ($products as $product) {
+        echo col(
+          class: 'col-6 col-sm-6 col-lg-4 col-xl-3',
+          content: $this->partial('component/product/preview/default', [
+            'product' => $product
+          ])
+        );
+      }
+    });
+  });

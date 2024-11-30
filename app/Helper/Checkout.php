@@ -45,7 +45,7 @@ class Checkout
 
     $order->coupon = Cart::getCoupon();
     $order->priceWithoutDiscount = Cart::price();
-    $order->price = Cart::priceWithCoupon();
+    $order->price = Cart::priceWithSale();
     $order->count = Cart::count();
 
     $order->products = Cart::items();

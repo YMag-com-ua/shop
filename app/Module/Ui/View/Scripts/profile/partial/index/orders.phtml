@@ -1,0 +1,12 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use App\Helper\Route;
+
+echo $this->partial('profile/partial/preview', [
+  'icon' => faIcon(icon: FaIcon::ICON_BAG_SHOPPING),
+  'title' => Phrase::t('Останні замовлення'),
+  'link' => ['title' => Phrase::t('Усі'), 'url' => Route::profileOrders()],
+  'inner' => 'ORDERS',
+]);

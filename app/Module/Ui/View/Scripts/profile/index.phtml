@@ -1,0 +1,61 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use Air\View\View;
+use App\Helper\Route;
+use App\Service\Viewed;
+use App\Service\WishList;
+
+/** @var View $this */
+
+echo $this->partial('profile/partial/container', [
+  'section' => row([
+    col(
+      class: 'col-12 col-md-6',
+      content: $this->partial('profile/partial/index/personal-data')
+    ),
+//    col(
+//      class: 'col-12 col-md-4',
+//      content: $this->partial('profile/partial/index/orders')
+//    ),
+    col(
+      class: 'col-12 col-md-6',
+      content: $this->partial('profile/partial/index/address')
+    ),
+    col(
+      class: 'col-12',
+      content: div(
+        class: 'mb-30',
+        content: $this->partial('component/product/group/horizontal', [
+          'products' => WishList::products(),
+          'title' => content([
+            faIcon(icon: FaIcon::ICON_HEART, class: 'mr-7'),
+            a(
+              href: Route::profileWishList(),
+              class: 'u-link secondary',
+              content: Phrase::t('Моє обране')
+            )
+          ]),
+        ])
+      ),
+    ),
+    col(
+      class: 'col-12',
+      content: div(
+        class: 'mb-30',
+        content: $this->partial('component/product/group/horizontal', [
+          'products' => Viewed::products(),
+          'title' => content([
+            faIcon(icon: FaIcon::ICON_EYE, class: 'mr-7'),
+            a(
+              href: Route::profileViewedProducts(),
+              class: 'u-link secondary',
+              content: Phrase::t('Історія переглядів')
+            )
+          ]),
+        ])
+      ),
+    ),
+  ])
+]);

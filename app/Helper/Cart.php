@@ -11,6 +11,7 @@ use Air\Model\Exception\ConfigWasNotProvided;
 use Air\Model\Exception\DriverClassDoesNotExists;
 use Air\Model\Exception\DriverClassDoesNotExtendsFromDriverAbstract;
 use App\Model\Coupon;
+use App\Model\DiscountCartBySum;
 use App\Model\Product;
 use App\Type\CartItem;
 use App\Type\Checkout\Data;
@@ -93,6 +94,8 @@ class Cart
    * @throws ConfigWasNotProvided
    * @throws DriverClassDoesNotExists
    * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
   public static function price(): float
   {
@@ -110,18 +113,38 @@ class Cart
    * @throws ConfigWasNotProvided
    * @throws DriverClassDoesNotExists
    * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
-  public static function priceWithCoupon(): float
+  public static function priceWithSale(): float
   {
     $price = self::price();
-    if ($coupon = self::getCoupon()) {
+    $coupon = self::getCoupon();
+
+    if ($coupon) {
       if ($coupon->type === Coupon::TYPE_PERCENTAGE) {
-        return $price - ($price / 100) * $coupon->value;
+        $price = $price - ($price / 100) * $coupon->value;
       }
-      if ($coupon->type === Coupon::TYPE_FIXED) {
-        return $price - $coupon->value;
+      else if ($coupon->type === Coupon::TYPE_FIXED) {
+        $price = $price - $coupon->value;
       }
     }
+
+    $discountBySum = self::getAppliedDiscountCartBySum();
+
+    if ($discountBySum) {
+      if ($coupon && !$discountBySum->allowedToBeUsedWithCoupons) {
+        return $price;
+      }
+
+      if ($discountBySum->type === DiscountCartBySum::TYPE_PERCENTAGE) {
+        $price = $price - ($price / 100) * $discountBySum->value;
+      }
+      else if ($discountBySum->type === DiscountCartBySum::TYPE_FIXED) {
+        $price = $price - $discountBySum->value;
+      }
+    }
+
     return $price;
   }
 
@@ -226,7 +249,13 @@ class Cart
   /**
    * @param Product $product
    * @return CartItem|null
+   * @throws CallUndefinedMethod
    * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
   public static function lineItem(Product $product): CartItem|null
   {
@@ -304,7 +333,13 @@ class Cart
 
   /**
    * @return Data
+   * @throws CallUndefinedMethod
    * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
   public static function getCheckoutData(): Data
   {
@@ -319,5 +354,51 @@ class Cart
   {
     self::removeCoupon();
     self::setRawItems([]);
+  }
+
+  /**
+   * @return DiscountCartBySum|null
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
+   */
+  public static function getNearestDiscountCartBySum(): DiscountCartBySum|null
+  {
+    if (!self::count()) {
+      return null;
+    }
+
+    $cond = ['minSum' => ['$gt' => self::price()]];
+    if (self::getCoupon()) {
+      $cond['allowedToBeUsedWithCoupons'] = true;
+    }
+    return DiscountCartBySum::one($cond, ['minSum' => 1]);
+  }
+
+  /**
+   * @return DiscountCartBySum|null
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
+   */
+  public static function getAppliedDiscountCartBySum(): DiscountCartBySum|null
+  {
+    if (!self::count()) {
+      return null;
+    }
+
+    $cond = ['minSum' => ['$lte' => self::price()]];
+    if (self::getCoupon()) {
+      $cond['allowedToBeUsedWithCoupons'] = true;
+    }
+    return DiscountCartBySum::one($cond, ['minSum' => -1]);
   }
 }

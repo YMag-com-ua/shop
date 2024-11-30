@@ -1,0 +1,63 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use App\Helper\Route;
+use App\Module\Ui\View\Helper\Input;
+
+echo $this->partial('auth/partial/container', ['form' => [
+
+  $this->partial('auth/partial/header', [
+    'title' => Phrase::t('Авторизація')
+  ]),
+
+  $this->partial('auth/partial/oauth', [
+    'title' => Phrase::t('Увійти за допомогою Google')
+  ]),
+
+  form(
+    data: 'form-auth',
+    class: 'mt-30 p-20 d-b br-5 sc-level-1 fw-6 d-f jc-c gp-5',
+    content: row(content: [
+      col('col-12',
+        Input::text(
+          label: Phrase::t('E-mail або телефон'),
+          description: Phrase::t('Якщо ви використовуєте телефон для входу - починайте введення з коду країни, наприклад "380..."'),
+          name: 'login',
+        )
+      ),
+      col('col-12 mt-20',
+        Input::text(
+          label: Phrase::t('Пароль'),
+          name: 'password',
+          error: Phrase::t('Перевірте введений e-mail або пароль, або вам необхідно підтвердити ваш обліковий запис')
+        )
+      ),
+      col(
+        class: 'col-7',
+        content: flex(
+          class: 'f-c gp-5 mt-20',
+          content: [
+            a(
+              href: Route::forgotPassword(),
+              class: 'td-u',
+              content: Phrase::t('Забули свій пароль?')
+            ),
+            a(
+              href: Route::register(),
+              class: 'td-u',
+              content: Phrase::t('Ще немає облікового запису?')
+            )
+          ]
+        )
+      ),
+      col('col-5 d-f jc-e', button(
+        class: 'btn-primary fw-bold tt-u py-10 d-f jc-c gp-10 ai-c mt-20',
+        isSubmit: true,
+        content: [
+          Phrase::t('Увійти'),
+          faIcon('chevron-right', class: 'fs-12')
+        ]
+      )),
+    ])
+  )
+]]);

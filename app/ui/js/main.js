@@ -21,6 +21,10 @@ import "./pages/contact";
 import {locale} from "./module/locale";
 import {richRadio} from "./common/rich-radio";
 import {swiperNav} from "./common/swiper";
+import {wishlist} from "./common/wishlist";
+import {compare} from "./common/compare";
+import {auth} from "./common/auth";
+import {profile} from "./common/profile";
 
 nav.callback.push(() => init());
 nav.beforeCallback.push(() => {
@@ -38,6 +42,10 @@ async.watch();
 offcanvas.watch();
 richRadio.watch();
 swiperNav.watch();
+wishlist.watch();
+compare.watch();
+auth.watch();
+profile.watch();
 
 locale.ready(() => {
   cart.watch();
@@ -54,9 +62,12 @@ const init = () => {
     dropdowns.attr('style', 'display: none !important');
     timer(50, () => dropdowns.attr('style', ''));
   }
+
   $('[data-input-mask]').each(function () {
     $(this).mask($(this).data('input-mask'));
   });
+
+  $('[role="tooltip"]').remove();
 };
 
 if ($(window).width() > 768) {

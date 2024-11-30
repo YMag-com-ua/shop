@@ -107,7 +107,26 @@ $stepPxs: mapMerge(
     fill(1, 10, 'px'),
     fillStep(12, 50, 2, 'px'),
     fillStep(50, 100, 5, 'px'),
-    fillStep(110, 400, 10, 'px')
+    fillStep(110, 400, 10, 'px'),
+    fillStep(410, 1000, 100, 'px')
+);
+
+$stepViewport: mapMerge(
+    (0: 0),
+    fill(1, 10, 'vw'),
+    fillStep(12, 50, 2, 'vw'),
+    fillStep(50, 100, 5, 'vw'),
+    fillStep(110, 400, 10, 'vw'),
+    fillStep(410, 1000, 100, 'vw')
+);
+
+$stepDeviceViewport: mapMerge(
+    (0: 0),
+    fill(1, 10, 'dvw'),
+    fillStep(12, 50, 2, 'dvw'),
+    fillStep(50, 100, 5, 'dvw'),
+    fillStep(110, 400, 10, 'dvw'),
+    fillStep(410, 1000, 100, 'dvw')
 );
 
 $grid-columns: 12;

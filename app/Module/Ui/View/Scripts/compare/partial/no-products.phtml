@@ -1,0 +1,16 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use App\Helper\Route;
+
+echo div(class: 'my-50 ta-c', content: [
+  h2(class: 'mb-10 fs-18', content: [
+    span(class: 'c-secondary mr-5', content: Phrase::t('Ой!!!')),
+    Phrase::t('У вас немає товарів до порівняння')
+  ]),
+  p(class: 'mb-15', content: Phrase::t('Перейдіть до нашого каталогу - вам точно щось сподобається :)')),
+  a(href: Route::catalog(), class: 'btn-dark d-if ai-c gp-10', content: [
+    Phrase::t('Перейти до каталогу'),
+    faIcon('arrow-right', class: 'fs-10')
+  ])
+]);

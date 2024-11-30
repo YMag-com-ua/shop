@@ -35,11 +35,12 @@ use App\Type\Banner;
  *
  * @property Language $language
  *
- * @property array $yug
- * @property integer $yugId
- * @property integer $yugParentId
+ * @property integer $ymlId
+ * @property integer $ymlParentId
+ * @property string $ymlSource
  */
 class Category extends ModelAbstract
 {
+  const string SOURCE_AGER = "ager";
 }
 

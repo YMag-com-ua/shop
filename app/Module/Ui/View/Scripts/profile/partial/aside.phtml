@@ -1,0 +1,69 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use App\Helper\Route;
+
+echo div(
+  class: 'f-c gp-10 px-20 py-18 br-5 sc-level-1 fw-6 d-f jc-c',
+  content: [
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profile(),
+      content: [
+        faIcon(icon: FaIcon::ICON_HOME, class: 'w-24'),
+        Phrase::t('Дашборд')
+      ]
+    ),
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profileEdit(),
+      content: [
+        faIcon(icon: FaIcon::ICON_USER, class: 'w-24'),
+        Phrase::t('Мої дані')
+      ]
+    ),
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profileOrders(),
+      content: [
+        faIcon(icon: FaIcon::ICON_BAG_SHOPPING, class: 'w-24'),
+        Phrase::t('Мої замовлення')
+      ]
+    ),
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profileAddresses(),
+      content: [
+        faIcon(icon: FaIcon::ICON_MAP, class: 'w-24'),
+        Phrase::t('Мої адреси')
+      ]
+    ),
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profileWishList(),
+      content: [
+        faIcon(icon: FaIcon::ICON_HEART, class: 'w-24'),
+        Phrase::t('Моє обране')
+      ]
+    ),
+    a(
+      class: 'fw-6 c-secondary-hover d-f ai-c',
+      href: Route::profileViewedProducts(),
+      content: [
+        faIcon(icon: FaIcon::ICON_EYE, class: 'w-24'),
+        Phrase::t('Історія переглядів')
+      ]
+    ),
+    div(class: 'h-1 bg-level-3-bg w-pr-50'),
+    a(
+      class: 'fw-6 c-danger d-f ai-c',
+      href: Route::logout(),
+      data: ['force' => true],
+      content: [
+        faIcon(icon: FaIcon::ICON_RIGHT_FROM_BRACKET, class: 'w-24'),
+        Phrase::t('Вихід')
+      ]
+    ),
+  ]
+);

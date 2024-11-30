@@ -1,0 +1,61 @@
+<?php
+
+use App\Helper\Compare;
+use App\Model\Product;
+
+/** @var Product[] $products */
+$products = $this->products;
+
+echo container(
+  class: 'mb-50',
+  content: function () use ($products) {
+
+    echo $this->partial('compare/partial/breadcrumbs');
+
+    if (!count($products)) {
+      echo $this->partial('compare/partial/no-products');
+      return;
+    }
+
+    echo div(
+      class: 'w-pr-100 d-b of-a p-sk t-60 py-10 z-1 bg-body-bg pb-30',
+      content: flex(
+        class: 'w-pr-100 jc-sp gp-10 mn-w-1000',
+        content: function () use ($products) {
+          echo div(class: 'w-f', content: '');
+          foreach ($products as $product) {
+            echo div(
+              class: 'w-f',
+              content: \App\Module\Ui\View\Helper\Product::compare($product)
+            );
+          }
+        }
+      )
+    );
+
+    foreach (Compare::specificationMatrix() as $group => $specifications) {
+
+      echo flex(class: 'px-10 py-8 sc-level-2 ai-c gp-20 fw-bold fs-20 h-40 bw-b-1 bc-level-2-bg', content: $group);
+
+      echo div(class: 'of-h br-4 fs-13 fs-lg-14 mn-w-1000', content: function () use ($specifications, $products) {
+
+        $index = 0;
+        foreach ($specifications as $title => $productValues) {
+          echo flex(
+            class: ['w-pr-100 jc-sp gp-10', $index % 2 ? 'sc-level-2' : 'sc-level-1'],
+            content: function () use ($products, $title, $productValues) {
+              echo div(class: 'w-f px-10 py-8 fw-6', content: $title);
+              foreach ($products as $product) {
+                if (isset($productValues[$product->url])) {
+                  echo div(class: 'w-f pl-0 px-12 py-10', content: $productValues[$product->url]);
+                } else {
+                  echo div(class: 'w-f o-50 pl-0 px-12 py-10', content: 'n/a');
+                }
+              }
+            }
+          );
+          $index++;
+        }
+      });
+    }
+  });

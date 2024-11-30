@@ -44,7 +44,7 @@ class Cart extends Base
     $count = \App\Helper\Cart::count();
     $price = \App\Helper\Cart::price();
     $coupon = \App\Helper\Cart::getCoupon();
-    $priceWithCoupon = \App\Helper\Cart::priceWithCoupon();
+    $priceWithCoupon = \App\Helper\Cart::priceWithSale();
 
     return [
       'count' => $count,
@@ -76,7 +76,13 @@ class Cart extends Base
    * @param Product $product
    * @param string $sign
    * @return array
+   * @throws CallUndefinedMethod
    * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
   public function minusPlus(Product $product, string $sign): array
   {
@@ -89,7 +95,7 @@ class Cart extends Base
 
     return [
       'info' => $this->getView()->render('cart/partial/info'),
-      'line' => $this->getView()->render('cart/cart/cart-line', [
+      'line' => $this->getView()->render('cart/cart/line', [
         'item' => \App\Helper\Cart::lineItem($product)
       ])
     ];
@@ -220,7 +226,7 @@ class Cart extends Base
     $items = \App\Helper\Cart::items();
     $price = \App\Helper\Cart::price();
     $coupon = \App\Helper\Cart::getCoupon();
-    $priceWithCoupon = \App\Helper\Cart::priceWithCoupon();
+    $priceWithCoupon = \App\Helper\Cart::priceWithSale();
 
     $this->getView()->setVars([
       'count' => $count,

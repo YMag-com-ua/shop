@@ -1,20 +1,52 @@
-// TODO: max-width, viewport-width, dvw
+// TODO: max-width
 
 $utilities: map-merge($utilities, (
-  "width-percentage": (
+  "width-pixels": (
     property: width,
     class: w,
     responsive: true,
     //state: hover,
     values: $stepPxs
   ),
-  "width-pixels": (
+  "width-percentage": (
     property: width,
     class: w-pr,
     responsive: true,
     //state: hover,
     values: $stepPercents
   ),
+
+  "width-viewport": (
+    property: width,
+    class: wv,
+    responsive: true,
+    // state: hover,
+    values: $stepViewport
+  ),
+  "width-device-viewport": (
+    property: width,
+    class: wdv,
+    responsive: true,
+    // state: hover,
+    values: $stepDeviceViewport
+  ),
+
+  "min-width-pixels": (
+    property: min-width,
+    class: mn-w,
+    responsive: true,
+    //state: hover,
+    values: $stepPxs
+  ),
+
+  "max-width-pixels": (
+    property: max-width,
+    class: mx-w,
+    responsive: true,
+    //state: hover,
+    values: $stepPxs
+  ),
+
   "width-quick": (
     property: width,
     class: w,

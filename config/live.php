@@ -49,6 +49,7 @@ return [
       'codes' => '_codes',
       'robotsTxt' => '_robotsTxt',
       'cache' => '_cache',
+      'notAllowed' => '_notAllowed',
       'rich-content' => [
         'file', 'files', 'text', 'html', 'embed'
       ],

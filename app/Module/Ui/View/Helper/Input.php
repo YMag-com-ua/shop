@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace App\Module\Ui\View\Helper;
 
+use Air\Core\Exception\ClassWasNotFound;
+use Air\Model\Exception\CallUndefinedMethod;
+use Air\Model\Exception\ConfigWasNotProvided;
+use Air\Model\Exception\DriverClassDoesNotExists;
+use Air\Model\Exception\DriverClassDoesNotExtendsFromDriverAbstract;
 use Air\Type\FaIcon;
+use ReflectionException;
+use Throwable;
 
 class Input
 {
@@ -24,6 +31,7 @@ class Input
     array        $labelAttributes = [],
     array        $inputAttributes = [],
     array        $errorAttributes = [],
+    string       $description = null,
   ): string
   {
     return div(
@@ -39,6 +47,10 @@ class Input
           required: $required,
           attributes: $labelAttributes,
           class: $labelClass
+        ) : null,
+        $description ? div(
+          class: 'fs-12 c-gray',
+          content: $description
         ) : null,
         text(
           name: $name,
@@ -78,6 +90,45 @@ class Input
   ): string
   {
     $inputAttributes['type'] = 'number';
+
+    return self::text(
+      $name,
+      $value,
+      $label,
+      $required,
+      $placeholder,
+      $hasError,
+      $error,
+      $containerClass,
+      $labelClass,
+      $inputClass,
+      $errorClass,
+      $containerAttributes,
+      $labelAttributes,
+      $inputAttributes,
+      $errorAttributes
+    );
+  }
+
+  public static function password(
+    string       $name = null,
+    string       $value = null,
+    string       $label = null,
+    bool         $required = true,
+    string       $placeholder = null,
+    bool         $hasError = false,
+    string       $error = null,
+    string|array $containerClass = [],
+    string|array $labelClass = [],
+    string|array $inputClass = [],
+    string|array $errorClass = [],
+    array        $containerAttributes = [],
+    array        $labelAttributes = [],
+    array        $inputAttributes = [],
+    array        $errorAttributes = [],
+  ): string
+  {
+    $inputAttributes['type'] = 'password';
 
     return self::text(
       $name,
@@ -149,9 +200,30 @@ class Input
     );
   }
 
+  /**
+   * @param string $icon
+   * @param string $iconStyle
+   * @param string|array $iconClass
+   * @param string $style
+   * @param string|null $hover
+   * @param string|null $title
+   * @param string $titlePlacement
+   * @param string|array $class
+   * @param string|array $data
+   * @param string|array $attributes
+   * @return string
+   * @throws ClassWasNotFound
+   * @throws CallUndefinedMethod
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
+   */
   public static function pillIcon(
     string       $icon,
     string       $iconStyle = FaIcon::STYLE_REGULAR,
+    string|array $iconClass = [],
     string       $style = 'secondary',
     string|null  $hover = null,
     string|null  $title = null,
@@ -188,14 +260,12 @@ class Input
       content: faIcon(
         icon: $icon,
         style: $iconStyle,
-        class: 'fs-12'
+        class: array_merge(['fs-12'], (array)($iconClass ?? []))
       )
     );
   }
 
-  public static function pillIconSwiperNav(
-    string|array $class = []
-  ): string
+  public static function pillIconSwiperNav(string|array $class = []): string
   {
     return div(class: ['d-f gp-5', $class], content: [
       self::pillIcon(icon: 'chevron-left', iconStyle: FaIcon::STYLE_SOLID, data: 'swiper-nav-prev'),
@@ -203,9 +273,7 @@ class Input
     ]);
   }
 
-  public static function stickIconSwiperNav(
-    string|array $class = []
-  ): string
+  public static function stickIconSwiperNav(string|array $class = []): string
   {
     return div(class: ['d-f gp-5', $class], content: [
       div(

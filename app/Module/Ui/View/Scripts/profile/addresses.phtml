@@ -1,0 +1,20 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\View\View;
+
+/** @var View $this */
+
+echo $this->partial('profile/partial/container', [
+  'title' => Phrase::t('Мої адреси'),
+  'section' => row([
+    col(
+      class: 'col-12 col-md-7',
+      content: $this->partial('profile/partial/addresses/form')
+    ),
+    col(
+      class: 'col-12 col-md-5',
+      content: $this->partial('profile/partial/addresses/list')
+    ),
+  ])
+]);

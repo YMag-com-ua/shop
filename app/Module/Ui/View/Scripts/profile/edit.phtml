@@ -1,0 +1,24 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\View\View;
+
+/** @var View $this */
+
+echo $this->partial('profile/partial/container', [
+  'title' => Phrase::t('Мої дані'),
+  'section' => row([
+    col(
+      class: 'col-12 col-md-4',
+      content: $this->partial('profile/partial/edit/personal-data')
+    ),
+    col(
+      class: 'col-12 col-md-4',
+      content: $this->partial('profile/partial/edit/email')
+    ),
+    col(
+      class: 'col-12 col-md-4',
+      content: $this->partial('profile/partial/edit/password')
+    ),
+  ])
+]);

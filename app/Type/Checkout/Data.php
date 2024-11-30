@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace App\Type\Checkout;
 
+use Air\Core\Exception\ClassWasNotFound;
+use Air\Model\Exception\CallUndefinedMethod;
+use Air\Model\Exception\ConfigWasNotProvided;
+use Air\Model\Exception\DriverClassDoesNotExists;
+use Air\Model\Exception\DriverClassDoesNotExtendsFromDriverAbstract;
 use Air\Type\TypeAbstract;
+use ReflectionException;
+use Throwable;
 
 class Data extends TypeAbstract
 {
@@ -60,6 +67,13 @@ class Data extends TypeAbstract
 
   /**
    * @param array|null $item
+   * @throws ClassWasNotFound
+   * @throws CallUndefinedMethod
+   * @throws ConfigWasNotProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   * @throws ReflectionException
+   * @throws Throwable
    */
   public function __construct(?array $item = [])
   {

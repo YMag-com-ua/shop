@@ -1,0 +1,10 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\View\View;
+
+/** @var View $this */
+
+echo $this->partial('component/header', [
+  'breadcrumbs' => [Phrase::t('Порівняння')]
+]);

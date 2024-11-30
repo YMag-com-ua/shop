@@ -1,0 +1,51 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use Air\View\View;
+use App\Helper\Route;
+use App\Service\User\Auth;
+
+/** @var View $this */
+
+$user = Auth::getUser();
+
+echo $this->partial('profile/partial/preview', [
+  'icon' => faIcon(icon: FaIcon::ICON_MAP),
+  'title' => Phrase::t('Мої адреси'),
+  'link' => [
+    'title' => Phrase::t('Усі'),
+    'url' => Route::profileAddresses()
+  ],
+  'inner' => div(content: function () use ($user) {
+
+    $user->addresses= null;
+
+    $addresses = ($user->addresses ?? []);
+
+    if (!count(($user->addresses ?? []))) {
+      echo div(
+        class: 'ta-c',
+        content: [
+          div(class: 'o-50 mb-20', content: Phrase::t('Ви поки що не додали жодної адреси')),
+          a(
+            href: Route::profileAddresses(),
+            class: 'btn-secondary',
+            content: Phrase::t('Додати адресу')
+          )
+        ]
+      );
+      return;
+    }
+
+    echo flex(class: 'f-c gp-10', content: function () use ($addresses) {
+      foreach ($addresses as $index => $address) {
+        echo a(
+          class: 'fw-4 td-u',
+          href: Route::profileAddresses($index),
+          content: implode(', ', $address->toArray())
+        );
+      }
+    });
+  }),
+]);

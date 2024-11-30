@@ -22,6 +22,10 @@ wait.on('[data-swiper-catalog-banner]', (el) => {
   });
 });
 
+$(document).on('click', '[data-form-search] [data-submit]', function () {
+  $(this).closest('[data-form-search]').submit();
+});
+
 $(document).on('submit', '[data-form-search]', function () {
   const search = $(this).find('[name=search]').val().trim();
   if (search.length > 2) {

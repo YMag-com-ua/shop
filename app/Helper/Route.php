@@ -56,16 +56,40 @@ class Route
    */
   public static function currentRoute(): array
   {
+    $router = Front::getInstance()->getRouter();
+
     return [
       'route' => [
-        'controller' => Front::getInstance()->getRouter()->getController(),
-        'action' => Front::getInstance()->getRouter()->getAction(),
+        'controller' => $router->getController(),
+        'action' => $router->getAction(),
       ],
       'params' => [
-        ...Front::getInstance()->getRouter()->getUrlParams(),
-        ...Front::getInstance()->getRouter()->getRequest()->getParams()
+        ...$router->getUrlParams(),
+        ...$router->getRequest()->getParams()
       ]
     ];
+  }
+
+  /**
+   * @param array $params
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function currentRouteWithParams(array $params = []): string
+  {
+    $currentRoute = self::currentRoute();
+
+    $currentRoute['params'] = [
+      ...$currentRoute['params'],
+      ...$params
+    ];
+
+    return self::assemble($currentRoute['route'], $currentRoute['params']);
   }
 
   /**
@@ -178,9 +202,51 @@ class Route
    * @throws DriverClassDoesNotExists
    * @throws DriverClassDoesNotExtendsFromDriverAbstract
    */
-  public static function tariff(): string
+  public static function legalWarranty(): string
   {
-    return self::assemble(['action' => 'tariff']);
+    return self::assemble(['controller' => 'legal', 'action' => 'warranty']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function legalRules(): string
+  {
+    return self::assemble(['controller' => 'legal', 'action' => 'rules']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function legalRefund(): string
+  {
+    return self::assemble(['controller' => 'legal', 'action' => 'refund']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function legalPrivacyPolicy(): string
+  {
+    return self::assemble(['controller' => 'legal', 'action' => 'privacyPolicy']);
   }
 
   /**
@@ -480,5 +546,269 @@ class Route
   public static function contact(): string
   {
     return self::assemble(['action' => 'contact']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function wishlist(): string
+  {
+    return self::assemble(['controller' => 'wishlist']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function wishlistAdd(): string
+  {
+    return self::assemble(['controller' => 'wishlist', 'action' => 'add']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function wishlistRemove(): string
+  {
+    return self::assemble(['controller' => 'wishlist', 'action' => 'remove']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function compare(): string
+  {
+    return self::assemble(['controller' => 'compare'],);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function compareAdd(): string
+  {
+    return self::assemble(['controller' => 'compare', 'action' => 'add']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function compareRemove(): string
+  {
+    return self::assemble(['controller' => 'compare', 'action' => 'remove']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function auth(): string
+  {
+    return self::assemble(['controller' => 'auth']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function forgotPassword(): string
+  {
+    return self::assemble(['controller' => 'auth', 'action' => 'forgotPassword']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function register(): string
+  {
+    return self::assemble(['controller' => 'auth', 'action' => 'register']);
+  }
+
+  /**
+   * @param string $code
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function confirm(string $code): string
+  {
+    return self::assemble(
+      ['controller' => 'auth', 'action' => 'confirm'],
+      ['code' => $code]
+    );
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profile(): string
+  {
+    return self::assemble(['controller' => 'profile']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileEdit(): string
+  {
+    return self::assemble(['controller' => 'profile', 'action' => 'edit']);
+  }
+
+  /**
+   * @param string $code
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileChangeEmailRequest(string $code): string
+  {
+    return self::assemble(
+      ['controller' => 'profile', 'action' => 'changeEmail'],
+      ['code' => $code]
+    );
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileOrders(): string
+  {
+    return self::assemble(['controller' => 'profile', 'action' => 'orders']);
+  }
+
+  /**
+   * @param int|null $address
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileAddresses(?int $address = null): string
+  {
+    return self::assemble(
+      ['controller' => 'profile', 'action' => 'addresses'],
+      ['address' => $address]
+    );
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileWishList(): string
+  {
+    return self::assemble(['controller' => 'profile', 'action' => 'wishList']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function profileViewedProducts(): string
+  {
+    return self::assemble(['controller' => 'profile', 'action' => 'viewedProducts']);
+  }
+
+  /**
+   * @return string
+   * @throws CallUndefinedMethod
+   * @throws ClassWasNotFound
+   * @throws ConfigWasNotProvided
+   * @throws DomainMustBeProvided
+   * @throws DriverClassDoesNotExists
+   * @throws DriverClassDoesNotExtendsFromDriverAbstract
+   */
+  public static function logout(): string
+  {
+    return self::assemble(['controller' => 'profile', 'action' => 'logout']);
   }
 }

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 namespace App\Module\Ui\Controller;
-
+use App\Service\Viewed;
 use Exception;
 
 class Product extends Base
@@ -15,6 +15,8 @@ class Product extends Base
    */
   public function index(\App\Model\Product $product): void
   {
+    Viewed::add($product);
+
     $product->addPopularity();
 
     $this->getView()->setMeta($product->meta);
@@ -28,6 +30,8 @@ class Product extends Base
    */
   public function quickView(\App\Model\Product $product): void
   {
+    Viewed::add($product);
+
     $product->addPopularity();
     $this->getView()->assign('product', $product);
   }

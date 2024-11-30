@@ -18,8 +18,7 @@
     "ext-curl": "*",
     "ext-json": "*",
     "ext-dom": "*",
-    "aircms/core": "dev-main",
-    "firebase/php-jwt": "^5.2"
+    "aircms/core": "dev-main"
   },
   "autoload": {
     "files": [

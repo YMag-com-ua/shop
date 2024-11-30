@@ -1,0 +1,45 @@
+<?php
+
+/** @var string $section */
+
+use Air\Crud\Model\Phrase;
+use App\Helper\Route;
+
+$section = $this->section;
+
+/** @var string $title */
+$title = $this->title;
+
+$breadcrumbs = [];
+
+if ($title) {
+  $breadcrumbs = [
+    Phrase::t('Кабінет') => Route::profile(),
+    $title
+  ];
+} else {
+  $breadcrumbs = [Phrase::t('Кабінет')];
+}
+
+echo container(
+  class: 'mb-20',
+  content: row(content: [
+    col(
+      class: 'col-12',
+      content: $this->partial('component/header', [
+        'breadcrumbs' => $breadcrumbs
+      ])
+    ),
+    col(
+      class: 'col-12 col-lg-3 mb-20',
+      content: div(
+        class: 'p-sk t-80',
+        content: $this->partial('profile/partial/aside')
+      )
+    ),
+    col(
+      class: 'col-12 col-lg-9',
+      content: $section
+    ),
+  ])
+);

@@ -1,14 +1,12 @@
-// TODO:viewport-height, dvw
-
 $utilities: map-merge($utilities, (
-  "height-percentage": (
+  "height-pixels": (
     property: height,
     class: h,
     responsive: true,
     // state: hover,
     values: $stepPxs
   ),
-  "height-pixels": (
+  "height-percentage": (
     property: height,
     class: h-pr,
     responsive: true,
@@ -21,6 +19,20 @@ $utilities: map-merge($utilities, (
     responsive: true,
     // state: hover,
     values: $stepPxs
+  ),
+  "height-viewport": (
+    property: height,
+    class: hv,
+    responsive: true,
+    // state: hover,
+    values: $stepViewport
+  ),
+  "height-device-viewport": (
+    property: height,
+    class: hdv,
+    responsive: true,
+    // state: hover,
+    values: $stepDeviceViewport
   ),
   "max-height": (
     property: max-height,

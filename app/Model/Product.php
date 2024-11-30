@@ -61,15 +61,14 @@ use Air\Type\RichContent;
  *
  * @property string $search
  *
- * @property array $yug
- * @property integer $yugId
- * @property integer $yugCategoryId
- * @property integer $yugPriceInitial
- * @property integer $yugPriceRrp
- * @property string $yugSyncId
+ * @property integer $ymlId
+ * @property integer $ymlCategoryId
+ * @property string $ymlSource
  */
 class Product extends ModelAbstract
 {
+  const string SOURCE_AGER = "ager";
+
   const int AVAILABILITY_NO = 0;
   const int AVAILABILITY_YES = 1;
   const int AVAILABILITY_RESERVED = 2;

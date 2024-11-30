@@ -1,11 +1,14 @@
 <?php
 
-use Air\View\View;
 use Air\Crud\Model\Phrase;
+use Air\Type\FaIcon;
+use Air\View\View;
+use App\Helper\Compare;
 use App\Helper\Route;
 use App\Model\Product;
 use App\Module\Ui\View\Helper\Common;
 use App\Module\Ui\View\Helper\Input;
+use App\Service\WishList;
 
 /** @var View $this */
 
@@ -39,32 +42,68 @@ echo div(
         }
 
         echo flex(
+          data: ['wishlist', 'compare'],
           class: 'hover-box an-1 p-a r-10 t-10 r-md-20 t-md-20 f-c gp-5',
-          content: [
-            Input::pillIcon(
+          content: function () use ($product) {
+            echo Input::pillIcon(
               icon: 'bag-shopping',
               style: 'body',
               hover: 'primary',
               data: ['cart-add' => $product->url],
               title: Phrase::t('Додати у кошик'),
               titlePlacement: 'left'
-            ),
-//            Input::pillIcon(
-//              icon: 'heart',
-//              style: 'body',
-//              hover: 'primary',
-//              title: Phrase::t('Додати у вабране'),
-//              titlePlacement: 'left'
-//            ),
-            Input::pillIcon(
+            );
+            echo Input::pillIcon(
               icon: 'magnifying-glass',
               style: 'body',
               hover: 'primary',
               title: Phrase::t('Швидкий перегяд'),
               titlePlacement: 'left',
               data: ['popup-href' => Route::productQuickView($product)]
-            )
-          ]
+            );
+
+            echo Input::pillIcon(
+              class: Compare::isIn($product) ? 'd-n' : '',
+              icon: 'scale-balanced',
+              style: 'body',
+              hover: 'primary',
+              title: Phrase::t('Додати до порівняння'),
+              titlePlacement: 'left',
+              data: ['compare-add' => $product->url]
+            );
+            echo Input::pillIcon(
+              class: Compare::isIn($product) ? '' : 'd-n',
+              icon: 'scale-balanced',
+              iconStyle: FaIcon::STYLE_LIGHT,
+              style: 'body',
+              hover: 'primary',
+              title: Phrase::t('Прибрати з порівняння'),
+              titlePlacement: 'left',
+              data: ['compare-remove' => $product->url]
+            );
+
+            echo Input::pillIcon(
+              class: WishList::isIn($product) ? 'd-n' : '',
+              icon: 'heart',
+              iconClass: 'c-red',
+              style: 'body',
+              hover: 'primary',
+              title: Phrase::t('Додати у вибране'),
+              titlePlacement: 'left',
+              data: ['wishlist-add' => $product->url]
+            );
+            echo Input::pillIcon(
+              class: WishList::isIn($product) ? '' : 'd-n',
+              icon: 'heart',
+              iconStyle: FaIcon::STYLE_SOLID,
+              iconClass: 'c-red',
+              style: 'body',
+              hover: 'primary',
+              title: Phrase::t('Видалити з обраного'),
+              titlePlacement: 'left',
+              data: ['wishlist-remove' => $product->url]
+            );
+          }
         );
       }
     ),

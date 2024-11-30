@@ -3,7 +3,9 @@
 use Air\Crud\Model\Language;
 use Air\Crud\Model\Phrase;
 use Air\View\View;
+use App\Helper\Compare;
 use App\Helper\Route;
+use App\Service\WishList;
 
 /** @var View $this */
 
@@ -11,7 +13,8 @@ $languages = Language::all();
 
 echo flex(class: 'f-c h-f', content: [
   a(href: Route::home(), class: 'mb-10', content: [
-    img(src: 'images/logo-light.png', class: 'h-26 h-md-40'),
+    img(src: 'images/logo-dark.png', class: 'h-26 h-md-40 only-light'),
+    img(src: 'images/logo-light.png', class: 'h-26 h-md-40 only-dark')
   ]),
   div(
     class: 'flex-g-1',
@@ -21,10 +24,22 @@ echo flex(class: 'f-c h-f', content: [
         [
           div(class: 'mobile-menu', content: [
             $this->partialCached('component/layout/partial/menu'),
-//            a(data: ['badge' => 23], content: [
-//              faIcon(icon: 'heart', class: 'icon'),
-//              Phrase::t('Вибране')
-//            ])
+            a(
+              data: ['badge' => Compare::count(), 'compare-badge'],
+              href: Route::compare(),
+              content: [
+                faIcon(icon: 'scale-balanced', class: 'icon'),
+                Phrase::t('Порівняти')
+              ]
+            ),
+            a(
+              data: ['badge' => WishList::count(), 'wishlist-badge'],
+              href: Route::wishlist(),
+              content: [
+                faIcon(icon: 'heart', class: 'icon'),
+                Phrase::t('Вибране')
+              ]
+            ),
           ]),
           a(href: Route::catalog(), class: 'd-f mt-20 ai-c', data: ['force' => true, 'mobile-category-btn'], content: [
             $this->partial('component/layout/partial/catalog-logo'),
@@ -34,11 +49,16 @@ echo flex(class: 'f-c h-f', content: [
         ],
         div(class: 'mobile-categories', data: ['mobile-category-container'])
       ]
-    )),
-  div(class: 'pt-30 pb-15', content: [
-    $this->partialCached('component/layout/partial/socials'),
-    div(class: 'sc-level-3 h-1 mt-10'),
-    div(class: 'mt-10', content: Phrase::t('Ми використовуємо безпечну оплату')),
-    img(src: 'images/payment.png', class: 'mt-10')
-  ])
+    )
+  ),
+  div(content: $this->partialCached('component/layout/partial/search')),
+  div(
+    class: 'pt-30 pb-15',
+    content: [
+      $this->partialCached('component/layout/partial/socials'),
+      div(class: 'sc-level-3 h-1 mt-10'),
+      div(class: 'mt-10', content: Phrase::t('Ми використовуємо безпечну оплату')),
+      img(src: 'images/payment.png', class: 'mt-10')
+    ]
+  )
 ]);

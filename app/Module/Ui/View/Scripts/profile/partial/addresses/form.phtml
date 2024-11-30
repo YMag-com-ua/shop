@@ -1,0 +1,83 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Map;
+use Air\Type\FaIcon;
+use Air\View\View;
+use App\Model\ShopSettings;
+use App\Module\Ui\View\Helper\Input;
+use App\Service\User\Auth;
+
+/** @var View $this */
+
+$user = Auth::getUser();
+$shopSettings = ShopSettings::singleOne();
+
+/** @var int $addressIndex */
+$addressIndex = $this->addressIndex;
+
+$address = $user->addresses[$addressIndex] ?? null;
+
+echo $this->partial('profile/partial/preview', [
+  'icon' => faIcon(icon: FaIcon::ICON_MAP),
+  'title' => $address ? Phrase::t('Редагування адресу') : Phrase::t('Додати адресу'),
+  'inner' => form(
+    data: 'form-address',
+    class: 'd-b br-5 sc-level-1 fw-6 d-f jc-c gp-5',
+    content: row(
+      class: 'gt-10',
+      content: [
+        hidden('address', value: $addressIndex),
+        col('col-12',
+          Input::select(
+            options: Map::execute($shopSettings->regions, 'title'),
+            label: Phrase::t('Виберіть область'),
+            error: Phrase::t('Вкажіть вашу область'),
+            value: $address?->getRegion(),
+            name: 'region',
+          ),
+        ),
+        col('col-12',
+          Input::text(
+            label: Phrase::t('Вкажіть Місто / Село'),
+            error: Phrase::t('Вкажіть ваше місто'),
+            value: $address?->getCity(),
+            name: 'city',
+          )
+        ),
+        col('col-12',
+          Input::text(
+            placeholder: Phrase::t('Назва вулиці та номер будинку'),
+            label: Phrase::t('Вкажіть адресу'),
+            value: $address?->getLine1(),
+            name: 'line1',
+          )
+        ),
+        col('col-6',
+          Input::text(
+            placeholder: Phrase::t('Квартира, офіс, блок і т.д.'),
+            value: $address?->getLine2(),
+            name: 'line2',
+            error: Phrase::t('Вкажіть коректну адресу')
+          )
+        ),
+        col('col-6',
+          Input::number(
+            placeholder: Phrase::t('Поштовий індекс'),
+            value: $address?->getPostCode(),
+            name: 'postCode',
+            error: Phrase::t('Вкажіть поштовий індекс')
+          )
+        ),
+        col('col-12 d-f jc-e', button(
+          class: 'btn-primary fw-bold tt-u py-10 d-f jc-c gp-10 ai-c mt-20',
+          isSubmit: true,
+          content: [
+            $address !== -1 ? Phrase::t('Зберегти') : Phrase::t('Додати'),
+            faIcon('chevron-right', class: 'fs-12')
+          ]
+        )),
+      ]
+    )
+  ),
+]);

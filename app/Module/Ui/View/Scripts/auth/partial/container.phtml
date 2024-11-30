@@ -1,0 +1,16 @@
+<?php
+
+/** @var string $form */
+$form = $this->form;
+
+echo container(
+  class: 'mt-20 mt-lg-30 mb-40 mb-lg-50',
+  content: [
+    row(
+      content: col(
+        class: 'col-12 col-sm-10 offset-sm-1 col-md-6 offset-md-3 col-xl-4 offset-xl-4',
+        content: $form
+      )
+    )
+  ]
+);

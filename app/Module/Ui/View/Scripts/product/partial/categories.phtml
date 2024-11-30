@@ -3,9 +3,11 @@
 use Air\Crud\Model\Phrase;
 use Air\Type\FaIcon;
 use Air\View\View;
+use App\Helper\Compare;
 use App\Helper\Route;
 use App\Model\Category;
 use App\Model\Product;
+use App\Service\WishList;
 
 /** @var View $this */
 
@@ -21,8 +23,9 @@ foreach ($product->categories as $category) {
   }
 }
 
-echo flex(class: 'ai-c jc-sb gp-20', content: [
-  flex(class: 'f-w gp-10', content: function () use ($categories) {
+echo flex(class: 'ai-c jc-sb gp-20', content: function () use ($categories, $product) {
+
+  echo flex(class: 'f-w gp-10', content: function () use ($categories) {
     foreach ($categories as $category) {
       echo a(
         href: Route::catalog($category),
@@ -30,9 +33,29 @@ echo flex(class: 'ai-c jc-sb gp-20', content: [
         content: span(class: 'sc-secondary br-4 px-5 py-3 sd-soft', content: $category->title)
       );
     }
-  }),
-//  a(
-//    data: ['title' => Phrase::t('Додати в обране')],
-//    content: faIcon('heart', style: FaIcon::STYLE_LIGHT, class: 'fs-30 c-red fs-md-25 lh-1')
-//  )
-]);
+  });
+
+  echo div(data: ['wishlist', 'compare'], content: [
+    a(
+      class: Compare::isIn($product) ? 'd-n' : '',
+      data: ['title' => Phrase::t('Додати до порівняння'), 'compare-add' => $product->url],
+      content: faIcon('scale-balanced', style: FaIcon::STYLE_LIGHT, class: 'fs-30 fs-md-25 lh-1'),
+    ),
+    a(
+      class: Compare::isIn($product) ? '' : 'd-n',
+      data: ['title' => Phrase::t('Прибрати з порівняння'), 'compare-remove' => $product->url],
+      content: faIcon('scale-balanced', style: FaIcon::STYLE_LIGHT, class: 'fs-30 fs-md-25 lh-1'),
+    ),
+
+    a(
+      class: [WishList::isIn($product) ? 'd-n' : '', 'ml-10'],
+      data: ['title' => Phrase::t('Додати в обране'), 'wishlist-add' => $product->url],
+      content: faIcon('heart', style: FaIcon::STYLE_LIGHT, class: 'fs-30 c-red fs-md-25 lh-1'),
+    ),
+    a(
+      class: [WishList::isIn($product) ? '' : 'd-n', 'ml-10'],
+      data: ['title' => Phrase::t('Видалити з обраного'), 'wishlist-remove' => $product->url],
+      content: faIcon('heart', style: FaIcon::STYLE_SOLID, class: 'fs-30 c-red fs-md-25 lh-1'),
+    ),
+  ]);
+});

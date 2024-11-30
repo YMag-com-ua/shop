@@ -1,0 +1,15 @@
+<?php
+
+/** @var string $title */
+$title = $this->title;
+
+/** @var string $description */
+$description = $this->description;
+
+echo flex(
+  class: 'gp-10 f-c ai-c ta-c mb-20',
+  content: [
+    span(class: 'c-secondary fs-20 fw-bold', content: $title),
+    div(class: 'c-gray fs-14', content: $description),
+  ]
+);

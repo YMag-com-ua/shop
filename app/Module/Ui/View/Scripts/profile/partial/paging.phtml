@@ -1,0 +1,56 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\Paging;
+use App\Helper\Route;
+
+/** @var int $count */
+$count = $this->count;
+
+/** @var int $page */
+$page = $this->page;
+
+/** @var int $show */
+$show = $this->show;
+
+$paging = Paging::paging($count, $page, $show);
+
+if (!$paging) {
+  return;
+}
+
+$from = ($page - 1) * $show;
+if (!$from) {
+  $from = 1;
+}
+
+$to = $page * $show;
+
+echo container(
+  class: 'py-30',
+  content: [
+    flex(class: 'jc-sb ai-c', content: [
+      p(
+        class: 'mb-2 mb-sm-0 fs-14',
+        content: implode(' ', [$from . ' - ' . $to, span(class: 'fs-12', content: '/'), $count, Phrase::t('Товарів')])
+      ),
+      flex(class: 'gp-10 fs-14 ai-c', content: function () use ($paging, $page) {
+
+        if ($paging['prev']) {
+          echo a(href: Route::currentRouteWithParams(['page' => $paging['prev']]), content: faIcon('arrow-left'));
+        }
+
+        foreach ($paging['pages'] as $rangePage) {
+          echo a(
+            href: Route::currentRouteWithParams(['page' => $rangePage]),
+            class: ['w-30 ar-1-1 d-f ai-c jc-c lh-1', $rangePage === $page ? 'c-primary bw-2 br-4 bc-primary' : null],
+            content: $rangePage,
+          );
+        }
+
+        if ($paging['next']) {
+          echo a(href: Route::blog(page: $paging['next']), content: faIcon('arrow-right'));
+        }
+      })
+    ])
+  ]);

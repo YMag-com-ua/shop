@@ -1,0 +1,27 @@
+<?php
+
+use Air\Crud\Model\Phrase;
+use Air\View\View;
+use App\Model\Product;
+
+/** @var View $this */
+
+/** @var Product[] $products */
+$products = $this->products;
+
+echo $this->partial('profile/partial/container', [
+  'title' => Phrase::t('Історія переглядів'),
+  'section' => row(content: function () use ($products) {
+    foreach ($products as $product) {
+      echo col(
+        class: 'col-6 col-sm-6 col-lg-4 col-xl-3 col',
+        content: div(
+          class: 'mb-20',
+          content: $this->partial('component/product/preview/default', [
+            'product' => $product
+          ])
+        ));
+    }
+    echo col(class: 'col-12', content: $this->partial('profile/partial/paging'));
+  })
+]);

@@ -1,0 +1,38 @@
+<?php
+
+/** @var View $this */
+
+use Air\View\View;
+
+/** @var string $title */
+$title = $this->title;
+
+/** @var string $inner */
+$inner = $this->inner;
+
+/** @var string $icon */
+$icon = $this->icon;
+
+$link = $this->link['title'] ?? null;
+$url = $this->link['url'] ?? null;
+
+echo div(
+  class: 'px-20 py-18 br-5 sc-level-1 fw-6 mb-30',
+  content: [
+    flex(
+      class: 'jc-sb',
+      content: [
+        flex(
+          class: 'ai-c',
+          content: [
+            $icon,
+            span(class: 'ml-10', content: $title),
+          ]
+        ),
+        $link ? a(href: $url, content: $link, class: 'u-link secondary c-secondary') : null
+      ]
+    ),
+    div(class: 'h-1 bg-level-3-bg my-10'),
+    div(content: $inner),
+  ]
+);
